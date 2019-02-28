@@ -1,8 +1,14 @@
+var path = require('path');
+
 module.exports = {
-    entry: __dirname + '/src/index.js',
+    entry: path.resolve(__dirname, 'src/index.js'),
     output: {
         filename: 'main.js',
-        path: __dirname + '/public/dist'
+        path: path.resolve(__dirname, 'public/dist')
+    },
+    devtool: 'source-map',
+    devServer:{
+        contentBase: 'public'
     },
     module: {
         rules: [
