@@ -1,55 +1,23 @@
 import React, {Component} from 'react'
-import {createStore} from 'redux'
+import { connect } from 'react-redux';
 
-export default class Main extends Component{
+class Main extends Component{
     constructor(props){
         super(props)
-        //
-        this.initalState =[
-            {
-                "titulo": "United State"
-            },
-            {
-                "titulo": "Colombia"
-            },
-            {
-                "titulo": "Cuba"
-            },
-            {
-                "titulo": "Brasil"
-            }
-        ]
-        //
-        this.reducer = (state, action) => {
-            switch (action.type) {
-                case 'AGREGAR_DATO':
-                    return [...state, {'titulo': action.paylod.titulo}]
-                    break;            
-                default:
-                    return state
-                    break;
-            }
-        }
-        //
-        this.store = createStore(
-            this.reducer,
-            this.initalState,
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-        )
-        console.log(this.store.getState())
     }
+
     componentDidMount(){
         const $form = document.getElementById('busqueda')
         $form.addEventListener("submit", this.handleSubmit)
 
         this.addDataToContainer()
-        this.store.subscribe(()=>{this.addDataToContainer()})
+        this.subscribe(this.addDataToContainer)        
     }
 
     addDataToContainer(){
         const $container = document.getElementById('container')
         $container.innerHTML = ""
-        const data = this.store.getState();
+        const data = this.props.initalState
         data.forEach(item =>{
             const fila = document.createElement('p')
             fila.innerText = item.titulo
@@ -62,12 +30,13 @@ export default class Main extends Component{
         event.preventDefault();
         const objetoForm = new FormData($form)
         const titulo = objetoForm.get('titulo')
-        this.store.dispatch({
+        this.props.dispatch({
             type:'AGREGAR_DATO',
             paylod: {
                 titulo
             }
         })
+        this.addDataToContainer()
         console.log(titulo)
     }
 
@@ -82,3 +51,13 @@ export default class Main extends Component{
         )
     }
 }
+
+function mapStateToProps(state, props){
+    
+    console.log(state)
+    return {
+        initalState: state.data
+    }
+}
+
+export default connect(mapStateToProps)(Main)
