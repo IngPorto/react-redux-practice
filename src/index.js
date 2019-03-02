@@ -8,7 +8,14 @@ import data from './api/data'
 const reducer = (state, action) => {
     switch (action.type) {
         case 'AGREGAR_DATO':
-            return [...state, {'titulo': action.paylod.titulo}]
+            state.data.push({'titulo': action.paylod.titulo})
+            return state
+            //return [...state, {'titulo': action.paylod.titulo}]
+            /*
+            const tempState = state
+            tempState.push({'titulo':action.paylod.titulo})
+            return tempState
+            */
             break;            
         default:
             return state
