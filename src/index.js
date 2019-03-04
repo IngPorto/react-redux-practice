@@ -32,6 +32,7 @@ const store = createStore(
     initialState,
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 )
+let unsubscribe = store.subscribe(()=>{console.log('suscrito')})
 //console.log(store.getState())
 
 render(
